@@ -21,7 +21,7 @@ class Translator:
         try:
             self.settings = Settings.load()
         except Exception as ex:
-            self.logger.warning("Loading parsing failed, creating default.")
+            self.logger.warning(f"Loading parsing failed, creating default. {ex}")
             self.settings = Settings.create_default()
         
         if (not self.settings.valid()):
