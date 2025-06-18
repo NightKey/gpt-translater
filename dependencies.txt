@@ -1,3 +1,4 @@
 smdb_logger
 smdb_web_server
+smdb_api
 openai
