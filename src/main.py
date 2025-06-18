@@ -85,7 +85,7 @@ class Translator:
         return self.webServer.render_template_file("index.html", page_title=self.settings.webUIName, stats=self.stats(0))
     
     def stats(self, _) -> str:
-        return f"{self.settings.model.value}|in: {self.statistics.in_tokens}, out: {self.statistics.out_tokens} ~ ${self.statistics.current_cost()}"
+        return f"{self.settings.model.value}|in: {self.statistics.in_tokens}, out: {self.statistics.out_tokens} ~ ${self.statistics.current_cost(self.settings.model)}"
 
     def start(self):
         self.init()
