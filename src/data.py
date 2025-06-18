@@ -9,6 +9,7 @@ BASE_PATH = path.dirname(path.dirname(path.abspath(__file__)))
 DATA_PATH = path.join(BASE_PATH, "data")
 STATISTICS_PATH = path.join(DATA_PATH, "statistics.json")
 SETTINGS_PATH = path.join(DATA_PATH, "settings.json")
+API_SETTINGS_PATH = path.join(DATA_PATH, "api_settings.json")
 
 class Model(Enum):
     default = "gpt-4.1"
@@ -73,6 +74,35 @@ class Statistics:
         )
 
 @dataclass()
+class ApiSettings:
+    name: str = field(default = "GPT Translator")
+    api_key: str = field(default = "SMDB KEY HERE")
+    ip: str = field(default = "127.0.0.1")
+    port: int = field(default = 9600)
+
+    def save(self):
+        with open(API_SETTINGS_PATH, "w") as fp:
+            dump(self.__dict__, fp)
+    
+    @staticmethod
+    def from_json(data: Dict[str, Any]) -> "ApiSettings":
+        return ApiSettings(
+            data["name"],
+            data["api_key"],
+            data["ip"],
+            data["port"]
+        )
+
+    @staticmethod
+    def load() -> "ApiSettings":
+        if (not path.exists(API_SETTINGS_PATH)):
+            default = ApiSettings()
+            default.save()
+            return default
+        with open(API_SETTINGS_PATH, "r") as fp:
+            return ApiSettings.from_json(load(fp))
+
+@dataclass()
 class Settings:
     api_key: str
     languages: List[str]
@@ -85,6 +115,7 @@ class Settings:
     host: str
     port: int
     webUIName: str
+    white_list_networks: List[str]
     
     def save(self):
         with open(SETTINGS_PATH, "w") as fp:
@@ -126,5 +157,6 @@ class Settings:
             data["degrade"],
             data["host"],
             data["port"],
-            data["webUIName"]
+            data["webUIName"],
+            data["white_list_networks"]
         )
