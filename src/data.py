@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Dict, Any
-from os import path
-from json import load, dump, JSONDecodeError
-from datetime import datetime, date
+from os import path, mkdir
+from json import load, dump
+from datetime import datetime
 
 BASE_PATH = path.dirname(path.dirname(path.abspath(__file__)))
 DATA_PATH = path.join(BASE_PATH, "data")
@@ -107,6 +107,8 @@ class Settings:
     @staticmethod
     def load() -> "Settings":
         if (not path.exists(SETTINGS_PATH)):
+            if (not path.exists(DATA_PATH)):
+                mkdir(DATA_PATH)
             return Settings.create_default()
         with open(SETTINGS_PATH, "r") as fp:
             return Settings.from_json(load(fp))
