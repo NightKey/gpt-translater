@@ -11,8 +11,8 @@ send = function() {
         contentType: "text/plain",
         data: input,
         success: function(response) {
-            console.log(response);
             createBouble("remote", response);
+            fetchStatistics();
         }
     })
 }
@@ -85,7 +85,6 @@ $(document).ready(function() {
     };
     
    document.getElementById("user_input").onkeyup = (event) => { 
-        console.log(event.code);
         if (event.code == 'Enter' || event.code == "NumpadEnter") {
             send();
         }
