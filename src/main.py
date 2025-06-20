@@ -66,6 +66,7 @@ class Translator:
         )
         self.statistics.add_tokens(response.usage.input_tokens, response.usage.output_tokens)
         self.statistics.save()
+        if (response.usage.output_tokens == self.settings.max_tokens): self.logger.info(f"Response to \"{input}\" hit the output token limit!")
         return response.output_text
 
     def send_translate(self, urlData: UrlData) -> str:
