@@ -46,10 +46,11 @@ createContainer = function(className, value) {
 }
 
 createBouble = function(className, value) {
+    let newElement;
     if (className === "remote") {
         value.split("\n").forEach(element => {
             if (element.length === 0) return;
-            const newElement = createContainer(className, element);
+            newElement = createContainer(className, element);
             newElement.onclick = () => {
                 if (copy(element)) {
                     const tooltip = document.getElementById("tooltip");
@@ -61,8 +62,9 @@ createBouble = function(className, value) {
             }
         });
     } else {
-        createContainer(className, value);
+        newElement = createContainer(className, value);
     }
+    newElement.scrollIntoView();
 }
 
 fetchStatistics = function() {
@@ -84,12 +86,18 @@ $(document).ready(function() {
         send();
     };
     
-   document.getElementById("user_input").onkeyup = (event) => { 
+    let userInput = document.getElementById("user_input");
+    let sendButton = document.getElementById("send");
+    userInput.onkeyup = (event) => { 
         if (event.code == 'Enter' || event.code == "NumpadEnter") {
             send();
         }
-        document.getElementById("send").disabled = document.getElementById("user_input").value == ""
+        sendButton.disabled = userInput.value == ""
     };
+    
+    userInput.onchange = (event) => {
+        sendButton.disabled = userInput.value == ""
+    }
 
-    document.getElementById("user_input").focus();
+    userInput.focus();
 })
